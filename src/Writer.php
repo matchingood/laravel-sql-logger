@@ -147,7 +147,7 @@ class Writer
 
         $notification = (new SlackNotification())
             ->setLevel(SlackNotification::ERROR)
-            ->setIsAnnounced(false)
+            ->setIsAnnounced(true)
             ->setAttachmentTitle(self::SLOW_QUERY_SLACK_TITLE)
             ->setFields(array_merge($record['context'], $record['extra']));
         if (!empty($notification->routeNotificationForSlack())) {
