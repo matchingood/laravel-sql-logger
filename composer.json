@@ -1,5 +1,5 @@
 {
-    "name": "mnabialek/laravel-sql-logger",
+    "name": "matchingood/laravel-sql-logger",
     "description": "Log SQL queries in Laravel/Lumen framework",
     "keywords": ["laravel", "sql", "log", "logger", "lumen", "sql logger", "log sql queries"],
     "license": "MIT",
@@ -45,6 +45,6 @@
         },
         "suggest": {
             "symfony/thanks": "Star packages you use running 'composer thanks' command"
-        }        
-    } 
+        }
+    }
 }
