@@ -52,13 +52,9 @@ class Writer
 
         $line = $this->formatter->getLine($query);
         $context = $this->formatter->getSlackRecord($query);
-        if ($this->shouldLogQuery($query)) {
-            $this->saveLine($line, $this->fileName->getForAllQueries(), $this->shouldOverrideFile($query));
-        }
 
         if ($this->shouldLogSlowQuery($query)) {
             $this->toSlack($context);
-            $this->saveLine($line, $this->fileName->getForSlowQueries());
         }
     }
 
