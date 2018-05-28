@@ -56,10 +56,11 @@ class Formatter
      */
     public function getSlackRecord(SqlQuery $query)
     {
+        $sql = $this->queryLine($query);
         return [
             'request' => $this->originLine(),
             'time' => $this->time($query->time()),
-            'sql' => $this->queryLine($query),
+            'query' => "```{$sql}```",
         ];
     }
     /**
