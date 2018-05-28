@@ -47,7 +47,22 @@ class Formatter
             $this->queryLine($query) . PHP_EOL .
             $this->separatorLine() . PHP_EOL;
     }
+    /**
+     * Get formatted line.
+     *
+     * @param SqlQuery $query
+     *
+     * @return string
+     */
+    public function getSlackRecord(SqlQuery $query)
+    {
+        return [
+            'request' => $this->originLine(),
+            'time' => $this->time($query->time()),
+            'sql' => $this->queryLine($query),
 
+        ];
+    }
     /**
      * Format time.
      *
@@ -135,7 +150,7 @@ class Formatter
 
     /**
      * Format given query.
-     * 
+     *
      * @param string $query
      *
      * @return string

@@ -3,6 +3,10 @@
 namespace Mnabialek\LaravelSqlLogger;
 
 use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
+use App\Libs\SlackNotification;
+use App\Libs\Util;
+
+use App\Notifications\SlackPosted;
 
 class Writer
 {
@@ -20,6 +24,8 @@ class Writer
      * @var FileName
      */
     private $fileName;
+
+    const SLOW_QUERY_SLACK_TITLE = 'スロークエリー';
 
     /**
      * Writer constructor.
@@ -45,12 +51,13 @@ class Writer
         $this->createDirectoryIfNotExists($query->number());
 
         $line = $this->formatter->getLine($query);
-
+        $context = $this->formatter->getSlackRecord($query);
         if ($this->shouldLogQuery($query)) {
             $this->saveLine($line, $this->fileName->getForAllQueries(), $this->shouldOverrideFile($query));
         }
 
         if ($this->shouldLogSlowQuery($query)) {
+            $this->toSlack($context);
             $this->saveLine($line, $this->fileName->getForSlowQueries());
         }
     }
@@ -126,5 +133,26 @@ class Writer
     private function shouldOverrideFile(SqlQuery $query)
     {
         return ($query->number() == 1 && $this->config->overrideFile());
+    }
+
+    private function toSlack($context)
+    {
+        $record['context'] = $context;
+        $record['extra'] = [];
+
+        if (isset($record['context']['gitHash'])) {
+            $record['context']['gitHash']
+                = substr($record['context']['gitHash'], 0, 30);
+        }
+
+        $notification = (new SlackNotification())
+            ->setLevel(SlackNotification::ERROR)
+            ->setIsAnnounced(false)
+            ->setAttachmentTitle(self::SLOW_QUERY_SLACK_TITLE)
+            ->setFields(array_merge($record['context'], $record['extra']));
+        if (!empty($notification->routeNotificationForSlack())) {
+            $notification->notify(new SlackPosted);
+            return;
+        }
     }
 }
