@@ -60,7 +60,6 @@ class Formatter
             'request' => $this->originLine(),
             'time' => $this->time($query->time()),
             'sql' => $this->queryLine($query),
-
         ];
     }
     /**
