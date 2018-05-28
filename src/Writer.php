@@ -140,11 +140,6 @@ class Writer
         $record['context'] = $context;
         $record['extra'] = [];
 
-        if (isset($record['context']['gitHash'])) {
-            $record['context']['gitHash']
-                = substr($record['context']['gitHash'], 0, 30);
-        }
-
         $notification = (new SlackNotification())
             ->setLevel(SlackNotification::ERROR)
             ->setIsAnnounced(true)
