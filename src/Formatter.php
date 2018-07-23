@@ -59,6 +59,7 @@ class Formatter
         $sql = $this->queryLine($query);
         return [
             'request' => $this->originLine(),
+            'database' => DB::getDatabaseName(),
             'time' => $this->time($query->time()),
             'query' => "```{$sql}```",
         ];
