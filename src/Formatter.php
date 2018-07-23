@@ -4,6 +4,7 @@ namespace Mnabialek\LaravelSqlLogger;
 
 use Carbon\Carbon;
 use Illuminate\Container\Container;
+use DB;
 use Mnabialek\LaravelSqlLogger\Objects\Concerns\ReplacesBindings;
 use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
 
