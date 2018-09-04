@@ -3,7 +3,7 @@
 namespace Mnabialek\LaravelSqlLogger;
 
 use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
-use App\Libs\SlackNotification;
+use App\Notifications\SlowQuerySlackNotification;
 use App\Libs\Util;
 
 use App\Notifications\SlackPosted;
@@ -136,8 +136,8 @@ class Writer
         $record['context'] = $context;
         $record['extra'] = [];
 
-        $notification = (new SlackNotification())
-            ->setLevel(SlackNotification::ERROR)
+        $notification = (new SlowQuerySlackNotification())
+            ->setLevel(SlowQuerySlackNotification::ERROR)
             ->setIsAnnounced(false)
             ->setAttachmentTitle(self::SLOW_QUERY_SLACK_TITLE)
             ->setFields(array_merge($record['context'], $record['extra']));
