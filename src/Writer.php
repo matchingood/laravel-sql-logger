@@ -133,16 +133,10 @@ class Writer
 
     private function toSlack($context)
     {
-        $record['context'] = $context;
-
-        $backTrace = '未実装';
-        if (method_exists('Util', 'getFormattedBackTrace')) {
-            $backTrace = Util::getFormattedBackTrace();
-        }
-
-        $content  = "*database* {$record['context']['database']}\n";
-        $content .= "*query* ({$record['context']['time']})\n{$record['context']['query']}\n";
-        $content .= "{$record['context']['request']}\n";
+        $backTrace = Util::getFormattedBackTrace();
+        $content  = "*database* {$context['database']}\n";
+        $content .= "*query* ({$context['time']})\n{$context['query']}\n";
+        $content .= "{$context['request']}\n";
         $content .= "*backTrace*\n{$backTrace}\n";
 
         $notification = (new SlowQuerySlackNotification())
