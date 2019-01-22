@@ -12,6 +12,8 @@ class Formatter
 {
     use ReplacesBindings;
 
+    const MAX_QUERY_LENGTH = 3000;
+
     /**
      * @var Container
      */
@@ -159,7 +161,12 @@ class Formatter
      */
     protected function format($query)
     {
-        return $this->removeNewLines($query);
+        $query = $this->removeNewLines($query);
+        if (strlen($query) > self::MAX_QUERY_LENGTH) {
+            $query = substr($query, 0, self::MAX_QUERY_LENGTH);
+            $query = "{$query}...";
+        }
+        return $query;
     }
 
     /**
