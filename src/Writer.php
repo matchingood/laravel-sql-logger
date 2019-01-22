@@ -133,14 +133,18 @@ class Writer
 
     private function toSlack($context)
     {
-        $record['context'] = $context;
-        $record['extra'] = [];
+        $backTrace = Util::getFormattedBackTrace();
+        $content  = "*database* {$context['database']}\n";
+        $content .= "*query* ({$context['time']})\n{$context['query']}\n";
+        $content .= "{$context['request']}\n";
+        $content .= "*backTrace*\n{$backTrace}\n";
 
         $notification = (new SlowQuerySlackNotification())
             ->setLevel(SlowQuerySlackNotification::ERROR)
             ->setIsAnnounced(false)
             ->setAttachmentTitle(self::SLOW_QUERY_SLACK_TITLE)
-            ->setFields(array_merge($record['context'], $record['extra']));
+            ->setFields([$content]);
+
         if (!empty($notification->routeNotificationForSlack())) {
             $notification->notify(new SlackPosted);
             return;
